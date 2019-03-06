@@ -4,11 +4,11 @@
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
-       http://www.springframework.org/schema/context/spring-context-4.0.xsd
+       http://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/tx
-       http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+       http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 	 <!-- 
 	 	1.配置数据源   默认数据源没有事务
@@ -56,13 +56,13 @@
 	   			注意事项typeAliasesPackage不能使用通配符 *
 	   		 -->
 	   	 	<property name="typeAliasesPackage" 
-	   	 				value="com.etoak.modules"></property>
+	   	 				value="com.xyz.MySystem.bean"></property>
 	   	    <!-- mybatis加载 sql配置文件 -->
 	   	    <property name="mapperLocations">
 	   	    	<array>
 	   	    		<value>
 	   	    			<!-- **表示所有的 -->
-	   	    			classpath:com/etoak/**/mapper/*.xml
+	   	    			classpath:com/xyz/MySystem/dao/mapper/**/*.xml
 	   	    		</value>
 	   	    	</array>
 	   	    </property>
@@ -83,7 +83,7 @@
 	    				
 	    	<!-- 扫描接口 创建对象 只找接口 -->
 	    	<property name="basePackage" 
-	    			value="com.etoak.**.mapper"></property>
+	    			value="com.xyz.MySystem.dao.interf"></property>
 	        <!-- 接口需要使用Repository注解才会扫描对象   -->
 	        <property name="annotationClass" 
 	                value="org.springframework.stereotype.Repository"></property>

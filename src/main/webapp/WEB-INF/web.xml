@@ -6,7 +6,7 @@
   		<welcome-file>pages/login.html</welcome-file>
   	</welcome-file-list>
   	
-   <context-param>
+   	<context-param>
    		<param-name>contextConfigLocation</param-name>
    		<param-value>
    		<!-- classpath:表示src下面 -->
@@ -14,8 +14,11 @@
    			classpath:core/applicationContext-core.xml,
    			classpath:core/applicationContext-mybatis.xml
    		</param-value>
-   </context-param>
-  	
+   	</context-param>
+   	<context-param>
+   		<param-name>log4jConfiguration</param-name>
+   		<param-value>classpath:core/log4j2.xml</param-value>
+   	</context-param>
    	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>

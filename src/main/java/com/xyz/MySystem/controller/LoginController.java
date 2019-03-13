@@ -20,10 +20,6 @@ public class LoginController {
 	@Autowired
 	UserService service;
 	
-/*	@RequestMapping(value = "/index", method=RequestMethod.GET)
-	public String index() {
-		return "";
-	}*/
 	@ResponseBody
 	@RequestMapping(value="/login")
 	public LoginResp login(@RequestBody LoginReq req) {
@@ -37,7 +33,6 @@ public class LoginController {
 		//校验用户名和密码的正确性
 		boolean flag = service.loginCheck(req.getEmail(),req.getPassword());
 		
-		//设置用户redis信息
 		if(flag == true) {
 			resp.setCode("200");
 			resp.setMsg("成功");
@@ -48,6 +43,7 @@ public class LoginController {
 	
 	public static void main(String[] args) {
 		Jedis jedis = new Jedis("106.14.219.152",6379);
+		jedis.auth("YFY0922.");
 		jedis.set("bill", "100");
 		String string = jedis.get("bill");
 		System.out.println(string);

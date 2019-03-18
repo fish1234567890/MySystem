@@ -103,17 +103,15 @@
     
     <Loggers>
         <!--
-            添加项目日志
-            配置项目日志只输出com.bj58.renetwork下面的日志
-            additivity="false" 表示只将该日志输出到该配置的路径下面，并不会再重复输出到root也就是容器日志中
+            additivity="false" 表示不继承root
         -->
-        <logger name="com.bj58.renetwork" level="debug" additivity="false">
+        <logger name="com.xyz.MySystem" level="debug" additivity="false">
             <appender-ref ref = "ConsolePro"/>
             <appender-ref ref = "INFOPro"/>
             <appender-ref ref = "WARNPro" />
             <appender-ref ref = "ERRORPro" />
         </logger>
-        <!--添加容器日志-->
+		<!-- 添加根 -->
         <root level="INFO">
             <appender-ref ref = "Console"/>
             <appender-ref ref = "INFO" />

@@ -10,6 +10,7 @@ import com.alibaba.druid.util.StringUtils;
 import com.xyz.MySystem.bean.LoginReq;
 import com.xyz.MySystem.bean.LoginResp;
 import com.xyz.MySystem.service.UserService;
+import com.xyz.MySystem.util.redis.BaseRedis;
 
 import redis.clients.jedis.Jedis;
 
@@ -42,10 +43,13 @@ public class LoginController {
 	}
 	
 	public static void main(String[] args) {
-		Jedis jedis = new Jedis("106.14.219.152",6379);
-		jedis.auth("YFY0922.");
-		jedis.set("bill", "100");
-		String string = jedis.get("bill");
-		System.out.println(string);
+		BaseRedis jedis = new BaseRedis();
+		String set = jedis.setEX("bill", 5 , "23");
+		System.out.println(set);
+		while(true) {
+			String string = jedis.get("bill");
+			System.out.println(string);
+		}
+
 	}
 }

@@ -1,5 +1,9 @@
 package com.xyz.MySystem.controller;
 
+import java.lang.management.GarbageCollectorMXBean;
+import java.lang.management.ManagementFactory;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,9 +14,6 @@ import com.alibaba.druid.util.StringUtils;
 import com.xyz.MySystem.bean.LoginReq;
 import com.xyz.MySystem.bean.LoginResp;
 import com.xyz.MySystem.service.UserService;
-import com.xyz.MySystem.util.redis.BaseRedis;
-
-import redis.clients.jedis.Jedis;
 
 @Controller
 @RequestMapping(value="/user")
@@ -43,13 +44,10 @@ public class LoginController {
 	}
 	
 	public static void main(String[] args) {
-		BaseRedis jedis = new BaseRedis();
-		String set = jedis.setEX("bill", 5 , "23");
-		System.out.println(set);
-		while(true) {
-			String string = jedis.get("bill");
-			System.out.println(string);
-		}
+		 List<GarbageCollectorMXBean> l = ManagementFactory.getGarbageCollectorMXBeans();
+	        for(GarbageCollectorMXBean b : l) {
+	            System.out.println(b.getName());
+	        }
 
 	}
 }

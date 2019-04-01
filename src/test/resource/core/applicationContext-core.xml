@@ -17,5 +17,4 @@
 	<!-- 加载properties资源文件 -->
 	<context:property-placeholder location="classpath:core/*.properties,classpath:customer/*.properties"/>
 
-
 </beans>

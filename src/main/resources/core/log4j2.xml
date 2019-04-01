@@ -105,7 +105,7 @@
         <!--
             additivity="false" 表示不继承root
         -->
-        <logger name="com.xyz.MySystem" level="debug" additivity="false">
+        <logger name="com.xyz.MySystem" level="info" additivity="false">
             <appender-ref ref = "ConsolePro"/>
             <appender-ref ref = "INFOPro"/>
             <appender-ref ref = "WARNPro" />

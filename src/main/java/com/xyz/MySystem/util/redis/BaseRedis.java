@@ -1,5 +1,7 @@
 package com.xyz.MySystem.util.redis;
 
+import java.util.List;
+
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -136,6 +138,24 @@ public class BaseRedis {
 		}catch(Exception e) {
 			logger.error("redis [getSet] [ "+key+" : " +value+"] error",e);
 			return "-1";
+		}finally {
+			jedis.close();
+		}
+	}
+	
+	/**
+	 * 返回hash数据中某个hkey下的所有value
+	 * 
+	 * */
+	public List<String> hvals(String hkey){
+		Jedis jedis = null;
+		try {
+			jedis = pool.getResource();
+			List<String> hvals = jedis.hvals(hkey);
+			return hvals;
+		}catch(Exception e) {
+			logger.error("redis [hvals] [ "+hkey+" ] error",e);
+			return null;
 		}finally {
 			jedis.close();
 		}

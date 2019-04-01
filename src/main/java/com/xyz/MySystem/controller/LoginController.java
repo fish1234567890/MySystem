@@ -4,6 +4,8 @@ import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +16,7 @@ import com.alibaba.druid.util.StringUtils;
 import com.xyz.MySystem.bean.LoginReq;
 import com.xyz.MySystem.bean.LoginResp;
 import com.xyz.MySystem.service.UserService;
+import com.xyz.MySystem.util.redis.BaseRedis;
 
 @Controller
 @RequestMapping(value="/user")
@@ -22,9 +25,12 @@ public class LoginController {
 	@Autowired
 	UserService service;
 	
+	private final Logger logger = LoggerFactory.getLogger(BaseRedis.class);
+	
 	@ResponseBody
 	@RequestMapping(value="/login")
 	public LoginResp login(@RequestBody LoginReq req) {
+		logger.info("用户登陆" +req);
 		LoginResp resp = new LoginResp();
 		//校验用户传入的用户名和密码格式
 		if(StringUtils.isEmpty(req.getEmail()) && StringUtils.isEmpty(req.getPassword())) {

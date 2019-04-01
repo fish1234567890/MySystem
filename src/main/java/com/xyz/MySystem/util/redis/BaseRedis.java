@@ -1,13 +1,17 @@
 package com.xyz.MySystem.util.redis;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.JedisPool;
 
 /**
@@ -19,11 +23,18 @@ public class BaseRedis {
 
 	private final Logger logger = LoggerFactory.getLogger(BaseRedis.class);
 	
-	private JedisPool pool ;
+	private JedisCluster jedis ;
 	
 	public BaseRedis () {
 		GenericObjectPoolConfig config = new GenericObjectPoolConfig();
-		pool = new JedisPool(config, "106.14.219.152", 6379,3000,"YFY0922.");
+		Set<HostAndPort> nodes = new HashSet<HostAndPort>();
+        nodes.add(new HostAndPort("106.14.219.152", 6379));
+        nodes.add(new HostAndPort("106.14.219.152", 6378));
+        nodes.add(new HostAndPort("106.14.219.152", 6377));
+        nodes.add(new HostAndPort("106.14.219.152", 6376));
+        nodes.add(new HostAndPort("106.14.219.152", 6375));
+        nodes.add(new HostAndPort("106.14.219.152", 6374));
+        jedis = new JedisCluster(nodes, 2000, 100,config);
 		logger.info("redis 连接成功");
 	}
 	
@@ -36,15 +47,11 @@ public class BaseRedis {
 	 * 获取字符串类型的键值对
 	 */
 	public String get(String key) {
-		Jedis jedis = null;
 		try {
-			jedis = pool.getResource();
 			return jedis.get(key);
 		}catch(Exception e) {
-			logger.error("redis [get "+key+"] error",e);
+			logger.error("redis [get] ["+key+"] error",e);
 			return "-1";
-		}finally {
-			jedis.close();
 		}
 	}
 	
@@ -56,16 +63,12 @@ public class BaseRedis {
 	 * 新增一个String类型的键值对，如果key值重复会进行覆盖更新
 	 */
 	public String set(String key , String value) {
-		Jedis jedis = null;
 		try {
-			jedis = pool.getResource();
 			String set = jedis.set(key,value);
 			return set;
 		}catch(Exception e) {
-			logger.error("redis [set "+key+" : " +value+"] error",e);
+			logger.error("redis [set] ["+key+" : " +value+"] error",e);
 			return "-1";
-		}finally {
-			jedis.close();
 		}
 	}
 
@@ -80,16 +83,12 @@ public class BaseRedis {
 	 *
 	 */
 	public long setNX (String key , String value) {
-		Jedis jedis = null;
 		try {
-			jedis = pool.getResource();
 			long set = jedis.setnx(key,value);
 			return set;
 		}catch(Exception e) {
-			logger.error("redis [setNX "+key+" : " +value+"] error",e);
+			logger.error("redis [setNX] ["+key+" : " +value+"] error",e);
 			return -1L;
-		}finally {
-			jedis.close();
 		}
 	}
 	
@@ -108,16 +107,12 @@ public class BaseRedis {
 	 * 
 	 */
 	public String setEX (String key , int seconds , String value) {
-		Jedis jedis = null;
 		try {
-			jedis = pool.getResource();
 			String set = jedis.setex(key,seconds,value);
 			return set;
 		}catch(Exception e) {
-			logger.error("redis [setEX "+key+" : " +value+" | "+seconds+"] error",e);
+			logger.error("redis [setEX] ["+key+" : " +value+" | "+seconds+"] error",e);
 			return "-1";
-		}finally {
-			jedis.close();
 		}
 	}
 	
@@ -130,16 +125,12 @@ public class BaseRedis {
 	 * 
 	 */
 	public String getSet (String key , String value) {
-		Jedis jedis = null;
 		try {
-			jedis = pool.getResource();
 			String set = jedis.getSet(key,value);
 			return set;
 		}catch(Exception e) {
 			logger.error("redis [getSet] [ "+key+" : " +value+"] error",e);
 			return "-1";
-		}finally {
-			jedis.close();
 		}
 	}
 	
@@ -148,16 +139,12 @@ public class BaseRedis {
 	 * 
 	 * */
 	public List<String> hvals(String hkey){
-		Jedis jedis = null;
 		try {
-			jedis = pool.getResource();
 			List<String> hvals = jedis.hvals(hkey);
 			return hvals;
 		}catch(Exception e) {
 			logger.error("redis [hvals] [ "+hkey+" ] error",e);
 			return null;
-		}finally {
-			jedis.close();
 		}
 	}
 }
